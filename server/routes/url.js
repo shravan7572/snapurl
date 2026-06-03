@@ -23,4 +23,20 @@ urlroutes.post("/shorten",async (req,res)=>{
     }
 })
 
+urlroutes.get("/urls",async (req,res)=>{
+    try{
+
+      const getallurls=await Userdatabasemodel.find({});
+
+      res.json({
+       getallurls
+      })
+
+    }catch(e){
+      res.json({
+        message:"something went wrong!unable to fetch data."
+      })
+    }
+})
+
 module.exports= urlroutes
