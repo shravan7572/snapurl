@@ -37,6 +37,34 @@ urlroutes.get("/urls",async (req,res)=>{
         message:"something went wrong!unable to fetch data."
       })
     }
+})  
+
+urlroutes.get("/:shorturl", async (req, res) => {
+    try {
+     // 1. get shortCode from req.params
+      const shorturl=req.params.shorturl;
+        // 2. findOne in MongoDB matching that shortCode
+
+        const findthererender=await Userdatabasemodel.findOne({shorturl:shorturl})
+
+        // 3. if not found → res.status(404
+        if(!findthererender){
+         return res.status(404).json({
+            message:"there's no shorturl."
+          })
+        }
+        // 4. clicks + 1 → save
+        findthererender.clicks +=1
+        await findthererender.save()
+
+        // 5. res.redirect to originalUrl
+        res.redirect(findthererender.originalurl)
+
+    } catch(e) { 
+      res.json({
+        message:"unable to redirect to  link"
+      })
+     }
 })
 
 module.exports= urlroutes

@@ -9,6 +9,7 @@ app.use(express.json())
 const urlroutes=require("./routes/url");
 
 app.use("/api",urlroutes)
+app.use("/", urlroutes) 
 
 
 app.use(cors());
