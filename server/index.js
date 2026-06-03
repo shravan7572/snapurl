@@ -1,0 +1,23 @@
+require("dotenv").config();
+const express=require("express");
+const cors=require("cors");
+const mongoose = require("mongoose");
+const app=express();
+
+app.use(express.json())
+
+const urlroutes=require("./routes/url");
+
+app.use("/api",urlroutes)
+
+
+app.use(cors());
+
+
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB Connected "))
+  .catch((err) => console.log("MongoDB Error ", err));
+
+app.listen(5001,()=>{
+    console.log("You're server is running on http://localhost:5001/")
+})
