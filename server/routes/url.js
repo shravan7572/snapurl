@@ -1,10 +1,11 @@
 const express=require("express");
 const { nanoid } = require("nanoid")
 const Userdatabasemodel=require("../model/modeldb")
+const user_auth=require("../middleware/userauth")
 
 const urlroutes=express.Router();
 
-urlroutes.post("/shorten",async (req,res)=>{
+urlroutes.post("/shorten",user_auth,async (req,res)=>{
     const originalurl=req.body.originalurl;
 
     try{
@@ -16,17 +17,18 @@ urlroutes.post("/shorten",async (req,res)=>{
 
       res.json({
          originalurl:originalurl,
-        shorturl:`${process.env.BASE_URL}/${shortenurl}`
+        shorturl:`${process.env.BASE_URL}/${shortenurl}`,
+        userId:req.userId
       })
     }catch(e){
       res.status(500).json({message:"something went wrong"})
     }
 })
 
-urlroutes.get("/urls",async (req,res)=>{
+urlroutes.get("/urls", user_auth,async (req,res)=>{
     try{
 
-      const getallurls=await Userdatabasemodel.find({});
+      const getallurls=await Userdatabasemodel.find({userId:req.userId});
 
       res.json({
        getallurls
@@ -41,7 +43,7 @@ urlroutes.get("/urls",async (req,res)=>{
 
 urlroutes.get("/:shorturl", async (req, res) => {
     try {
-     // 1. get shortCode from req.params
+        // 1. get shortCode from req.params
       const shorturl=req.params.shorturl;
         // 2. findOne in MongoDB matching that shortCode
 

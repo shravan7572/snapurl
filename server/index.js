@@ -7,9 +7,11 @@ const app=express();
 app.use(express.json())
 
 const urlroutes=require("./routes/url");
+const loginroute=require("./routes/userlogin")
 
 app.use("/api",urlroutes)
 app.use("/", urlroutes) 
+app.use("/user",loginroute)
 
 
 app.use(cors());
