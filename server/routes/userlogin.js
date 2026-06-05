@@ -61,9 +61,11 @@ loginroute.post("/sign-in",async function(req,res){
 
         if(!comparepassword) return res.status(401).json({ message: "Wrong password" })
      
-            const token=jwt.sign({
-                id:finduserdb._id
-            },process.env.JWT_SECRET)
+            const token=jwt.sign(
+            {  id:finduserdb._id},
+            process.env.JWT_SECRET,
+            {expiresIn:"7d"}
+        )
         
 
         res.json({

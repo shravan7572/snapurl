@@ -1,23 +1,42 @@
 const express=require("express");
+const mongoose = require("mongoose")
 const { nanoid } = require("nanoid")
-const Userdatabasemodel=require("../model/modeldb")
+const {Userdatabasemodel}=require("../model/modeldb")
 const user_auth=require("../middleware/userauth")
 
 const urlroutes=express.Router();
 
 urlroutes.post("/shorten",user_auth,async (req,res)=>{
     const originalurl=req.body.originalurl;
+    const aliasurl=req.body.aliasurl;
+
+    let shortenurl;
+    let aliasmessage=null
+
+    if(aliasurl){
+      const existingurl=await Userdatabasemodel.findOne({shorturl:aliasurl});
+        if(existingurl){
+          //cant get the message on the postman//this bug is remaining!
+          shortenurl=nanoid(10);
+          aliasmessage=`"${aliasurl} is already taken ! we can auto-generate for you."`
+        }else{
+          shortenurl=aliasurl
+        }
+    }else{
+      shortenurl=nanoid(10);
+    }
 
     try{
-      const shortenurl=nanoid(7);
       await Userdatabasemodel.create({
         originalurl:originalurl,
-        shorturl:shortenurl
+        shorturl:shortenurl,
+        userId:req.userId
       })
 
       res.json({
          originalurl:originalurl,
         shorturl:`${process.env.BASE_URL}/${shortenurl}`,
+        message:aliasmessage,
         userId:req.userId
       })
     }catch(e){
