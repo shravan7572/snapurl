@@ -2,6 +2,7 @@ const mongoose=require("mongoose");
 const Schema=mongoose.Schema;
 
 const UserData= new Schema({
+    isActive:{type:Boolean,default:true},
      userId: { type: String  , required: true },
     originalurl:{ type: String, required: true },
     shorturl:{ type: String, required: true },

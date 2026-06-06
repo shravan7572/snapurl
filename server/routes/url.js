@@ -78,6 +78,12 @@ urlroutes.get("/:shorturl", async (req, res) => {
         findthererender.clicks +=1
         await findthererender.save()
 
+        if(!findthererender.isActive){
+          return res.json({
+            message:"the link is disabled!"
+          })
+        }
+
         // 5. res.redirect to originalUrl
         res.redirect(findthererender.originalurl)
 
@@ -86,6 +92,51 @@ urlroutes.get("/:shorturl", async (req, res) => {
         message:"unable to redirect to  link"
       })
      }
+})
+
+urlroutes.delete("/urls/:id", user_auth, async (req, res) => {
+    try {
+      const id=req.params.id;
+      const url=await Userdatabasemodel.findById(id);
+
+        if(!url){
+          return res.status(404).json({
+            message:"url not found"
+          })
+        }
+
+        if(url.userId!==req.userId){
+          return res.status(403).json({ message: "Not authorized" })
+        }
+
+        await Userdatabasemodel.findByIdAndDelete(id);
+        res.json({
+          messgae:"url deleted successfully!"
+        })
+  } catch(e) {
+        res.status(500).json({ message: "something went wrong" })
+       }
+})
+
+urlroutes.patch("/:id/toggle", user_auth, async (req, res) => {
+    try {
+        const id = req.params.id
+        const url = await Userdatabasemodel.findById(id)
+
+        if(!url) return res.status(404).json({ message: "url not found" })
+
+        if(url.userId !== req.userId) return res.status(403).json({ message: "Not authorized" })
+
+        url.isActive = !url.isActive
+        await url.save()
+
+        res.json({
+            message: `Link ${url.isActive ? "enabled" : "disabled"} successfully!`,
+            isActive: url.isActive
+        })
+    } catch(e) {
+        res.status(500).json({ message: "unable to toggle!" })
+    }
 })
 
 module.exports= urlroutes
