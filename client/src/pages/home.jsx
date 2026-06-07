@@ -59,6 +59,7 @@ function Home() {
             <div className="hero">
                 <h1>Shorten. Share.<br /><span>Track everything.</span></h1>
                 <p>Powerful link management with click analytics and custom aliases.</p>
+                
 
                 {error && <p className="error">{error}</p>}
 
@@ -89,7 +90,7 @@ function Home() {
         borderRadius: "8px",
         border: "1px solid #2d2b55"
     }}>
-        ℹ️ {result.message}
+         {result.message}
     </p>
 )}
 

@@ -1,0 +1,208 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500&display=swap');
+
+.dashboard {
+    min-height: 100vh;
+    background: #080808;
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    padding: 40px 20px;
+}
+
+.dashboard nav {
+    max-width: 900px;
+    margin: 0 auto 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.logo span { color: #a78bfa; }
+
+.nav-links { display: flex; gap: 12px; }
+
+.nav-links button {
+    background: none;
+    border: 1px solid #333;
+    color: #aaa;
+    padding: 8px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+}
+
+.nav-links button:hover { border-color: #a78bfa; color: #fff; }
+
+.dashboard-content { max-width: 900px; margin: 0 auto; }
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.dashboard-header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+}
+
+.dashboard-header h1 span { color: #a78bfa; }
+
+.total-links {
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 14px;
+    color: #666;
+}
+
+.total-links span {
+    color: #a78bfa;
+    font-weight: 600;
+    font-size: 20px;
+    margin-right: 6px;
+}
+
+.url-card {
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    transition: border-color 0.2s;
+}
+
+.url-card:hover { border-color: #333; }
+
+.url-card.disabled { opacity: 0.5; }
+
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.original-url {
+    font-size: 13px;
+    color: #666;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 500px;
+}
+
+.clicks-badge {
+    background: #1a1a2e;
+    color: #a78bfa;
+    border: 1px solid #2d2b55;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.short-url-text {
+    font-size: 18px;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 16px;
+    word-break: break-all;
+}
+
+.card-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.card-actions button {
+    background: none;
+    border: 1px solid #2a2a2a;
+    color: #aaa;
+    padding: 7px 14px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+}
+
+.card-actions button:hover { border-color: #a78bfa; color: #fff; }
+.card-actions .btn-delete:hover { border-color: #f87171; color: #f87171; }
+.card-actions .btn-toggle-off { color: #4ade80; border-color: #166534; }
+.card-actions .btn-toggle-off:hover { background: #14532d; }
+
+.analytics-section {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #1a1a1a;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.analytics-item {
+    background: #0d0d0d;
+    border: 1px solid #1a1a1a;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 12px;
+}
+
+.analytics-item label {
+    color: #555;
+    display: block;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 11px;
+}
+
+.analytics-item p {
+    color: #a78bfa;
+    font-weight: 500;
+    font-size: 13px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    color: #444;
+}
+
+.empty-state h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 24px;
+    margin-bottom: 12px;
+}
+
+.empty-state button {
+    margin-top: 20px;
+    background: #a78bfa;
+    color: #080808;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+}
+
+.loading {
+    text-align: center;
+    padding: 80px;
+    color: #444;
+    font-size: 16px;
+}
