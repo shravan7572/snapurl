@@ -5,6 +5,7 @@ const UAParser = require("ua-parser-js")
 const {Userdatabasemodel}=require("../model/modeldb")
 const user_auth=require("../middleware/userauth")
 const {analyticsmodel}=require("../model/analytics")
+const validurl=require("valid-url")
 
 const urlroutes=express.Router();
 
@@ -12,13 +13,25 @@ urlroutes.post("/shorten",user_auth,async (req,res)=>{
     const originalurl=req.body.originalurl;
     const aliasurl=req.body.aliasurl;
 
+    if(!validurl.isUri(originalurl)){
+      return res.status(400).json({ message: "Invalid URL! Please enter a valid URL." })
+    }
+
+      const existingornot= await Userdatabasemodel.findOne({originalurl:originalurl,userId:req.userId});
+
+        if(existingornot){
+          return res.json({
+            message:"You already shortened this URL!",
+            shorturl:`${process.env.BASE_URL}/${existingornot.shorturl}`
+          })
+        }
+
     let shortenurl;
     let aliasmessage=null
 
     if(aliasurl){
       const existingurl=await Userdatabasemodel.findOne({shorturl:aliasurl});
         if(existingurl){
-          //cant get the message on the postman//this bug is remaining!
           shortenurl=nanoid(10);
           aliasmessage=`"${aliasurl} is already taken ! we can auto-generate for you."`
         }else{
