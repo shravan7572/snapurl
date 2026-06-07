@@ -2,6 +2,8 @@ require("dotenv").config();
 const express=require("express");
 const cors=require("cors");
 const mongoose = require("mongoose");
+const passport = require("./config")        
+const oauthroute = require("./routes/oauth")
 const helmet=require("helmet");
 const morgan=require("morgan");
 const rateLimit = require("express-rate-limit")
@@ -12,6 +14,7 @@ app.use(cors());
 app.use(helmet());
 app.use(morgan("dev"))
 app.use(express.json())
+app.use(passport.initialize())
 
 const urlroutes=require("./routes/url");
 const loginroute=require("./routes/userlogin")
@@ -19,6 +22,7 @@ const loginroute=require("./routes/userlogin")
 app.use("/api",urlroutes)
 app.use("/", urlroutes) 
 app.use("/user",loginroute)
+app.use("/auth", oauthroute)  
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,  // 15 minutes

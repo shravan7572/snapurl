@@ -34,6 +34,7 @@ function Landing() {
             setError(e.response?.data?.message || "Login failed!")
         }
     }
+  
 
     async function handleSignup() {
         try {
@@ -251,7 +252,7 @@ function Landing() {
                     </div>
                     <div className="footer-col">
                         <h4>Resources</h4>
-                        <a href="https://github.com/yourusername/snapurl" target="_blank">GitHub</a>
+                        <a href="https://github.com/shravan7572/snapurl" target="_blank">GitHub</a>
                         <button className="footer-link-btn" onClick={() => scrollTo("faq")}>FAQ</button>
                     </div>
                     <div className="footer-col">
@@ -290,7 +291,15 @@ function Landing() {
                         <button className="modal-btn"
                             onClick={showModal === "login" ? handleLogin : handleSignup}>
                             {showModal === "login" ? "Login →" : "Create Account →"}
-                        </button>
+                            <div className="modal-divider">
+                                <span>or</span>
+                            </div>
+                            <button className="modal-google-btn"
+                                onClick={() => window.location.href = "http://localhost:5001/auth/google"}>
+                                <img src="https://www.google.com/favicon.ico" width="16" height="16" />
+                                Continue with Google
+                            </button>
+                          </button>
                         <p className="modal-switch">
                             {showModal === "login" ? "Don't have an account? " : "Already have an account? "}
                             <span onClick={() => { setShowModal(showModal === "login" ? "signup" : "login"); setError("") }}>

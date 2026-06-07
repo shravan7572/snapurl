@@ -136,7 +136,7 @@ function Dashboard() {
                     <div className="empty-state">
                         <h2>No links yet!</h2>
                         <p>Start shortening URLs to see them here.</p>
-                        <button onClick={() => navigate("/")}>Shorten your first URL</button>
+                        <button onClick={() => navigate("/app")}>Shorten your first URL</button>
                     </div>
                 ) : (
                     urls.map((url) => (

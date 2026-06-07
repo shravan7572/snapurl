@@ -814,3 +814,40 @@ body { background: var(--bg); font-family: var(--font-body); color: var(--text);
 
 .footer-col a:hover { color: var(--text); }
 .footer-col p { font-size: 13px; color: var(--muted); }
+.modal-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 16px 0;
+    color: var(--muted);
+    font-size: 13px;
+}
+.modal-divider::before,
+.modal-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--border-dark);
+}
+.modal-google-btn {
+    width: 100%;
+    background: white;
+    border: 1px solid var(--border-dark);
+    border-radius: 12px;
+    padding: 13px;
+    font-size: 14px;
+    font-family: var(--font-body);
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.2s;
+    color: var(--text);
+}
+.modal-google-btn:hover {
+    background: var(--glass);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow);
+}

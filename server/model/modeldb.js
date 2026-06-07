@@ -12,9 +12,10 @@ const UserData= new Schema({
 
 const logindata=new Schema({
     firstname:{type:String,required:true},
-    lastname:{type:String,required:true},
+    lastname:{type:String},
     email:{type:String,unique:true},
-    password:{type:String}
+    password:{type:String},
+     googleId:  { type: String }       
     
 })
 
