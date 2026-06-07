@@ -2,6 +2,19 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
 import "./Dashboard.css"
+function SkeletonCard() {
+    return (
+        <div className="url-card" style={{cursor:"default"}}>
+            <div className="skeleton-line" style={{width:"60%", height:"14px", marginBottom:"10px"}}></div>
+            <div className="skeleton-line" style={{width:"40%", height:"20px", marginBottom:"16px"}}></div>
+            <div style={{display:"flex", gap:"8px"}}>
+                <div className="skeleton-line" style={{width:"70px", height:"32px"}}></div>
+                <div className="skeleton-line" style={{width:"70px", height:"32px"}}></div>
+                <div className="skeleton-line" style={{width:"70px", height:"32px"}}></div>
+            </div>
+        </div>
+    )
+}
 
 function Dashboard() {
     const [urls,          setUrls]          = useState([])
@@ -83,17 +96,30 @@ function Dashboard() {
         }
     }
 
-    if(loading) return <div className="loading">Loading your links...</div>
+   if(loading) return (
+    <div className="dashboard">
+        <div className="orb orb-blue"></div>
+        <div className="orb orb-yellow"></div>
+        <nav>
+            <div className="logo">Snap<span>URL</span></div>
+        </nav>
+        <div className="dashboard-content">
+            {[1,2,3].map(i => <SkeletonCard key={i} />)}
+        </div>
+    </div>
+)
 
     return (
         <div className="dashboard">
+             <div className="orb orb-blue"></div>
+        <div className="orb orb-yellow"></div>
             <nav>
                 <div className="logo">Snap<span>URL</span></div>
                 <div className="nav-links">
-                    <button onClick={() => navigate("/")}>Shorten URL</button>
+                    <button onClick={() => navigate("/app")}>Shorten URL</button>
                     <button onClick={() => {
                         localStorage.removeItem("token")
-                        navigate("/login")
+                        navigate("/")
                     }}>Logout</button>
                 </div>
             </nav>

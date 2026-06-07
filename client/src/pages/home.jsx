@@ -3,19 +3,17 @@ import { useNavigate } from "react-router-dom"
 import axios from "axios"
 import "./Home.css"
 
-
-//clear all the bugs    
 function Home() {
-    const [url,       setUrl]       = useState("")
-    const [alias,     setAlias]     = useState("")
-    const [result,    setResult]    = useState(null)
-    const [error,     setError]     = useState("")
-    const [copied,    setCopied]    = useState(false)
+    const [url,    setUrl]    = useState("")
+    const [alias,  setAlias]  = useState("")
+    const [result, setResult] = useState(null)
+    const [error,  setError]  = useState("")
+    const [copied, setCopied] = useState(false)
 
     const navigate = useNavigate()
 
     async function handleShorten() {
-        if(!url) return setError("Please enter a URL!")
+        if(!url.trim()) return setError("Please enter a URL!")
         setError("")
         try {
             const response = await axios.post(
@@ -25,6 +23,7 @@ function Home() {
             )
             setResult(response.data)
         } catch(e) {
+            setResult(null)
             setError(e.response?.data?.message || "Something went wrong!")
         }
     }
@@ -36,102 +35,103 @@ function Home() {
     }
 
     function handleShare() {
-        if(navigator.share) {
-            navigator.share({ url: result.shorturl, title: "Check this link!" })
-        } else {
-            handleCopy()
-        }
+        if(navigator.share) navigator.share({ url: result.shorturl })
+        else handleCopy()
     }
 
     return (
         <div className="home">
-            <nav>
-                <div className="logo">Snap<span>URL</span></div>
+            <div className="orb orb-1"></div>
+            <div className="orb orb-2"></div>
+
+            {/* NAVBAR */}
+            <nav className="home-nav">
+                <div className="logo" onClick={() => navigate("/")}>
+                    Snap<span>URL</span>
+                </div>
                 <div className="nav-links">
                     <button onClick={() => navigate("/dashboard")}>Dashboard</button>
                     <button className="btn-primary" onClick={() => {
                         localStorage.removeItem("token")
-                        navigate("/signin")
+                        navigate("/")
                     }}>Logout</button>
                 </div>
             </nav>
 
-            <div className="hero">
-                <h1>Shorten. Share.<br /><span>Track everything.</span></h1>
-                <p>Powerful link management with click analytics and custom aliases.</p>
-                
+            {/* MAIN CONTENT */}
+            <div className="home-content">
 
-                {error && <p className="error">{error}</p>}
+                {/* LEFT SIDE */}
+                <div className="home-left">
+                    <h1>Shorten<br />your link.</h1>
+                    <p>Paste any URL below and get a clean short link with QR code and analytics.</p>
 
-                <div className="input-wrapper">
-                    <input
-                        type="text"
-                        placeholder="Paste your long URL here..."
-                        value={url}
-                        onChange={(e) => setUrl(e.target.value)}
-                    />
-                    <button onClick={handleShorten}>Shorten →</button>
+                    <div className="form-card">
+                        {error && <p className="error">{error}</p>}
+                        {result?.message && (
+                            <p className="message-box">ℹ️ {result.message}</p>
+                        )}
+
+                        <label className="input-label">Long URL</label>
+                        <input
+                            className="url-input"
+                            type="text"
+                            placeholder="https://your-very-long-url.com/..."
+                            value={url}
+                            onChange={(e) => setUrl(e.target.value)}
+                        />
+
+                        <label className="input-label">Custom Alias <span>(optional)</span></label>
+                        <input
+                            className="url-input"
+                            type="text"
+                            placeholder="e.g. my-portfolio"
+                            value={alias}
+                            onChange={(e) => setAlias(e.target.value)}
+                        />
+
+                        <button className="shorten-btn" onClick={handleShorten}>
+                            Shorten URL →
+                        </button>
+                    </div>
                 </div>
 
-                <input
-                    className="alias-input"
-                    type="text"
-                    placeholder="Custom alias (optional) e.g. my-portfolio"
-                    value={alias}
-                    onChange={(e) => setAlias(e.target.value)}
-                />
-                {result && result.message && (
-    <p style={{
-        color: "#a78bfa",
-        fontSize: "14px",
-        marginBottom: "16px",
-        background: "#1a1a2e",
-        padding: "10px 16px",
-        borderRadius: "8px",
-        border: "1px solid #2d2b55"
-    }}>
-         {result.message}
-    </p>
-)}
-
-                {result && (
-                    <div className="result-card">
-                        <h3>Your Short URL</h3>
-                        <p className="short-url">{result.shorturl}</p>
-
-                        <div className="result-actions">
-                            <button onClick={handleCopy}>
-                                {copied ? "✓ Copied!" : "Copy Link"}
-                            </button>
-                            <button onClick={handleShare}>Share</button>
-                            <button onClick={() => navigate("/dashboard")}>
-                                View All Links
-                            </button>
+                {/* RIGHT SIDE - RESULT */}
+                <div className="home-right">
+                    {!result ? (
+                        <div className="empty-result">
+                            <div className="empty-icon">🔗</div>
+                            <h3>Your short link<br />appears here</h3>
+                            <p>Paste a URL on the left<br />and click Shorten</p>
                         </div>
-                        
+                    ) : (
+                        <div className="result-content">
+                            <div className="result-label">YOUR SHORT LINK</div>
+                            <div className="result-url">{result.shorturl}</div>
 
-                        {result.qrCode && (
-                            <div className="qr-section">
-                                <h3>QR Code</h3>
-                                <img src={result.qrCode} alt="QR Code" />
-                                <br />
-                                <a href={result.qrCode} download="snapurl-qr.png">
-                                    <button style={{
-                                        background: "none",
-                                        border: "1px solid #333",
-                                        color: "#aaa",
-                                        padding: "8px 20px",
-                                        borderRadius: "8px",
-                                        cursor: "pointer",
-                                        fontSize: "14px"
-                                    }}>
-                                        Download QR
-                                    </button>
-                                </a>
+                            <div className="result-btns">
+                                <button onClick={handleCopy}>
+                                    {copied ? "✓ Copied!" : "Copy Link"}
+                                </button>
+                                <button onClick={handleShare}>Share</button>
+                                <button onClick={() => navigate("/dashboard")}>
+                                    Dashboard
+                                </button>
                             </div>
-                        )}
-                    </div>
-                )}
+
+                            {result.qrCode && (
+                                <div className="qr-box">
+                                    <div className="result-label">QR CODE</div>
+                                    <img src={result.qrCode} alt="QR Code" />
+                                    <a href={result.qrCode} download="snapurl-qr.png">
+                                        <button className="download-btn">Download QR</button>
+                                    </a>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
+
             </div>
         </div>
     )

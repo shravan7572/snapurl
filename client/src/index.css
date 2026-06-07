@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --bg:           #f4f0eb;
+    --glass:        rgba(255,255,255,0.55);
+    --glass-strong: rgba(255,255,255,0.8);
+    --border:       rgba(255,255,255,0.7);
+    --shadow:       0 8px 32px rgba(0,0,0,0.08);
+    --shadow-lg:    0 20px 60px rgba(0,0,0,0.12);
+    --accent:       #5b4fcf;
+    --accent-light: rgba(91,79,207,0.1);
+    --text:         #1a1820;
+    --muted:        #7c7589;
+    --font-display: 'Bricolage Grotesque', sans-serif;
+    --font-body:    'DM Sans', sans-serif;
+}
+
+body {
+    background: var(--bg);
+    font-family: var(--font-body);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* BACKGROUND ORBS - makes glassmorphism visible! */
+body::before,
+body::after {
+    content: '';
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.5;
+    z-index: 0;
+    pointer-events: none;
+}
+
+body::before {
+    width: 500px;
+    height: 500px;
+    background: #c4b5fd;
+    top: -150px;
+    left: -100px;
+}
+
+body::after {
+    width: 400px;
+    height: 400px;
+    background: #fca5a5;
+    bottom: -100px;
+    right: -100px;
+}
+
+.orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.4;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.orb-blue {
+    width: 350px;
+    height: 350px;
+    background: #93c5fd;
+    top: 40%;
+    right: 10%;
+}
+
+.orb-yellow {
+    width: 250px;
+    height: 250px;
+    background: #fde68a;
+    bottom: 20%;
+    left: 20%;
+}
+
+/* GLASS UTILITY */
+.glass {
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.fade-up { animation: fadeUp 0.5s ease forwards; }
