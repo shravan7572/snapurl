@@ -1,8 +1,10 @@
 const express=require("express");
 const mongoose = require("mongoose")
 const { nanoid } = require("nanoid")
+const UAParser = require("ua-parser-js")
 const {Userdatabasemodel}=require("../model/modeldb")
 const user_auth=require("../middleware/userauth")
+const {analyticsmodel}=require("../model/analytics")
 
 const urlroutes=express.Router();
 
@@ -63,7 +65,7 @@ urlroutes.get("/urls", user_auth,async (req,res)=>{
 urlroutes.get("/:shorturl", async (req, res) => {
     try {
         // 1. get shortCode from req.params
-      const shorturl=req.params.shorturl;
+        const shorturl=req.params.shorturl;
         // 2. findOne in MongoDB matching that shortCode
 
         const findthererender=await Userdatabasemodel.findOne({shorturl:shorturl})
@@ -74,15 +76,32 @@ urlroutes.get("/:shorturl", async (req, res) => {
             message:"there's no shorturl."
           })
         }
-        // 4. clicks + 1 → save
-        findthererender.clicks +=1
-        await findthererender.save()
-
-        if(!findthererender.isActive){
+         if(!findthererender.isActive){
           return res.json({
             message:"the link is disabled!"
           })
         }
+        // 4. clicks + 1 → save
+        findthererender.clicks +=1
+        await findthererender.save()
+
+        //analytics
+        const parser=new UAParser(req.headers["user-agent"]);
+
+        const browser =parser.getBrowser().name     ||"unknown";
+        const os      = parser.getOS().name       || "Unknown"
+        const device  = parser.getDevice().type   || "Desktop"
+
+          // save analytics
+          await analyticsmodel.create({
+              urlId:     findthererender._id,
+              shorturl:  findthererender.shorturl,
+              browser,
+              os,
+              device
+          })
+
+      
 
         // 5. res.redirect to originalUrl
         res.redirect(findthererender.originalurl)
@@ -138,5 +157,23 @@ urlroutes.patch("/:id/toggle", user_auth, async (req, res) => {
         res.status(500).json({ message: "unable to toggle!" })
     }
 })
+
+
+urlroutes.get("/urls/:id/analytics", user_auth, async (req, res) => {
+    try {
+        const id = req.params.id
+      const url=await Userdatabasemodel.findById(id);
+      if(!url){return res.status(404).json({messgae:"url not found"})}
+
+        if(url.userId !== req.userId) return res.status(403).json({ message: "Not authorized" })
+      
+        const findanalytics=await analyticsmodel.find({urlId:id}) 
+          res.json({analytics:findanalytics})
+
+    } catch(e) {
+        res.status(500).json({ message: "something went wrong" })
+    }
+})
+
 
 module.exports= urlroutes
