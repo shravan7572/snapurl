@@ -79,6 +79,19 @@ function Home() {
                     value={alias}
                     onChange={(e) => setAlias(e.target.value)}
                 />
+                {result && result.message && (
+    <p style={{
+        color: "#a78bfa",
+        fontSize: "14px",
+        marginBottom: "16px",
+        background: "#1a1a2e",
+        padding: "10px 16px",
+        borderRadius: "8px",
+        border: "1px solid #2d2b55"
+    }}>
+        ℹ️ {result.message}
+    </p>
+)}
 
                 {result && (
                     <div className="result-card">

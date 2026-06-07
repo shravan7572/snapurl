@@ -56,7 +56,6 @@ urlroutes.post("/shorten",user_auth,async (req,res)=>{
         shorturl:`${process.env.BASE_URL}/${shortenurl}`,
         qrCode,
         message:aliasmessage,
-        userId:req.userId
       })
     }catch(e){
       res.status(500).json({message:"something went wrong"})
