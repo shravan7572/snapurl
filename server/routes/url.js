@@ -6,6 +6,7 @@ const {Userdatabasemodel}=require("../model/modeldb")
 const user_auth=require("../middleware/userauth")
 const {analyticsmodel}=require("../model/analytics")
 const validurl=require("valid-url")
+const QRCode=require("qrcode");
 
 const urlroutes=express.Router();
 
@@ -48,9 +49,12 @@ urlroutes.post("/shorten",user_auth,async (req,res)=>{
         userId:req.userId
       })
 
+      const qrCode=await QRCode.toDataURL(`${process.env.BASE_URL}/${shortenurl}`)
+
       res.json({
          originalurl:originalurl,
         shorturl:`${process.env.BASE_URL}/${shortenurl}`,
+        qrCode,
         message:aliasmessage,
         userId:req.userId
       })
