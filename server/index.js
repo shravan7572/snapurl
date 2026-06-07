@@ -7,7 +7,7 @@ const morgan=require("morgan");
 const rateLimit = require("express-rate-limit")
 
 const app=express();
-
+app.use(cors());
 
 app.use(helmet());
 app.use(morgan("dev"))
@@ -29,7 +29,7 @@ const limiter = rateLimit({
 })
 app.use(limiter)
 
-app.use(cors());
+
 
 
 mongoose.connect(process.env.MONGO_URI)

@@ -13,7 +13,7 @@ const UserData= new Schema({
 const logindata=new Schema({
     firstname:{type:String,required:true},
     lastname:{type:String,required:true},
-    email:{type:String,unquie:true},
+    email:{type:String,unique:true},
     password:{type:String}
     
 })

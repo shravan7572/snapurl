@@ -25,6 +25,14 @@ loginroute.post("/sign-up",async function (req,res){
         }
     const {firstname,lastname,email,password}=req.body;
 
+    const existinemail=await loginmodel.findOne({email:email})
+
+        if(existinemail){
+            res.status(400).json({
+                message:"email already exist"
+            })
+        }
+        
     const hashedpassword=await bcrypt.hash(password,8);
     
     try{
