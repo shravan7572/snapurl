@@ -273,7 +273,7 @@ function Landing() {
                                 onClick={() => { setShowModal("signup"); setError("") }}>Sign Up</button>
                         </div>
                         <h2 className="modal-title">
-                            {showModal === "login" ? "Welcome back 👋" : "Create account"}
+                            {showModal === "login" ? "Welcome back !" : "Create account"}
                         </h2>
                         {error && <p className="modal-error">{error}</p>}
                         {showModal === "signup" && (

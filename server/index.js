@@ -25,8 +25,8 @@ app.use("/user",loginroute)
 app.use("/auth", oauthroute)  
 
 const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000,  // 15 minutes
-    max: 100,                   // max 100 requests per 15 min
+    windowMs: 15 * 60 * 1000,  
+    max: 100,                   
     message: {
         message: "Too many requests, please try again after 15 minutes!"
     }

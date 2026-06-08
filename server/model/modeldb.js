@@ -7,6 +7,7 @@ const UserData= new Schema({
     originalurl:{ type: String, required: true },
     shorturl:{ type: String, required: true },
     clicks:{ type: Number, default: 0 },
+     qrCode:   { type: String, default: null },
     createdon:{ type: Date, default: Date.now }
 })
 

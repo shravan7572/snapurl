@@ -41,15 +41,17 @@ urlroutes.post("/shorten",user_auth,async (req,res)=>{
     }else{
       shortenurl=nanoid(10);
     }
+    const qrCode=await QRCode.toDataURL(`${process.env.BASE_URL}/${shortenurl}`)
 
     try{
       await Userdatabasemodel.create({
         originalurl:originalurl,
         shorturl:shortenurl,
-        userId:req.userId
+        userId:req.userId,
+        qrCode
       })
 
-      const qrCode=await QRCode.toDataURL(`${process.env.BASE_URL}/${shortenurl}`)
+      
 
       res.json({
          originalurl:originalurl,
