@@ -101,8 +101,6 @@
 
     if(loading) return (
         <div className="dashboard">
-            <div className="orb orb-blue"></div>
-            <div className="orb orb-yellow"></div>
             <nav>
                 <div className="logo">Snap<span>URL</span></div>
             </nav>
@@ -114,8 +112,6 @@
 
         return (
             <div className="dashboard">
-                <div className="orb orb-blue"></div>
-            <div className="orb orb-yellow"></div>
                 <nav>
                     <div className="logo">Snap<span>URL</span></div>
                     <div className="nav-links">
@@ -213,7 +209,7 @@
         style={{
             position: "fixed",
             top: 0, left: 0, right: 0, bottom: 0,
-            background: "rgba(26,24,32,0.6)",
+            background: "rgba(0,0,0,0.7)",
             backdropFilter: "blur(8px)",
             display: "flex",
             alignItems: "center",
@@ -224,12 +220,13 @@
         <div 
             onClick={(e) => e.stopPropagation()}
             style={{
-                background: "rgba(255,255,255,0.97)",
-                borderRadius: "24px",
-                padding: "36px",
+                background: "var(--bg-secondary)",
+                borderRadius: "12px",
+                border: "1px solid var(--border)",
+                padding: "32px",
                 width: "320px",
                 textAlign: "center",
-                boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
                 position: "relative"
             }}
         >
@@ -238,45 +235,57 @@
                 onClick={() => setQrModal(null)}
                 style={{
                     position: "absolute",
-                    top: "16px", right: "16px",
-                    background: "rgba(0,0,0,0.06)",
-                    border: "none",
-                    width: "32px", height: "32px",
-                    borderRadius: "50%",
+                    top: "12px", right: "12px",
+                    background: "transparent",
+                    border: "1px solid var(--border)",
+                    width: "28px", height: "28px",
+                    borderRadius: "6px",
                     cursor: "pointer",
-                    fontSize: "14px",
-                    color: "#7c7589"
+                    fontSize: "16px",
+                    color: "var(--muted)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    transition: "all 0.2s"
+                }}
+                onMouseEnter={(e) => {
+                    e.target.style.background = "var(--glass)";
+                    e.target.style.color = "var(--text)";
+                }}
+                onMouseLeave={(e) => {
+                    e.target.style.background = "transparent";
+                    e.target.style.color = "var(--muted)";
                 }}
             >✕</button>
 
             <h3 style={{
-                fontFamily: "'Bricolage Grotesque', sans-serif",
+                fontFamily: "var(--font-display)",
                 fontSize: "20px",
                 fontWeight: "800",
-                color: "#1a1820",
+                color: "var(--text)",
                 marginBottom: "8px"
             }}>QR Code</h3>
 
             <p style={{
-                fontSize: "13px",
-                color: "#5b4fcf",
+                fontSize: "12px",
+                color: "var(--accent)",
                 marginBottom: "20px",
                 wordBreak: "break-all",
-                fontWeight: "500"
+                fontWeight: "600"
             }}>{BASE_URL}/{qrModal.shorturl}</p>
 
             <img 
                 src={qrModal.qrCode || `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${BASE_URL}/${qrModal.shorturl}`}
                 alt="QR Code"
                 style={{
-                    width: "200px",
-                    height: "200px",
-                    borderRadius: "12px",
+                    width: "180px",
+                    height: "180px",
+                    borderRadius: "10px",
                     marginBottom: "20px",
                     display: "block",
                     marginLeft: "auto",
                     marginRight: "auto",
-                    border: "1px solid rgba(0,0,0,0.06)"
+                    border: "1px solid var(--border)"
                 }}
             />
 
@@ -286,16 +295,20 @@
             >
                 <button style={{
                     width: "100%",
-                    background: "#5b4fcf",
+                    background: "var(--accent)",
                     border: "none",
                     color: "#fff",
-                    padding: "12px",
-                    borderRadius: "10px",
-                    fontSize: "14px",
-                    fontWeight: "500",
+                    padding: "10px",
+                    borderRadius: "8px",
+                    fontSize: "13px",
+                    fontWeight: "600",
                     cursor: "pointer",
-                    fontFamily: "'DM Sans', sans-serif"
-                }}>
+                    fontFamily: "var(--font-body)",
+                    transition: "all 0.2s"
+                }}
+                onMouseEnter={(e) => e.target.style.background = "var(--accent-pink)"}
+                onMouseLeave={(e) => e.target.style.background = "var(--accent)"}
+                >
                     Download QR
                 </button>
             </a>

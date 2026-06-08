@@ -3,18 +3,23 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-    --bg:           #f4f0eb;
-    --glass:        rgba(255,255,255,0.55);
-    --glass-strong: rgba(255,255,255,0.8);
-    --border:       rgba(255,255,255,0.7);
-    --shadow:       0 8px 32px rgba(0,0,0,0.08);
-    --shadow-lg:    0 20px 60px rgba(0,0,0,0.12);
-    --accent:       #5b4fcf;
-    --accent-light: rgba(91,79,207,0.1);
-    --text:         #1a1820;
-    --muted:        #7c7589;
-    --font-display: 'Bricolage Grotesque', sans-serif;
-    --font-body:    'DM Sans', sans-serif;
+    /* Dark Mistral Theme */
+    --bg:           #0a0a0a;
+    --bg-secondary: #121212;
+    --bg-tertiary:  #1a1a1a;
+    --glass:        rgba(255,255,255,0.05);
+    --glass-strong: rgba(255,255,255,0.1);
+    --border:       rgba(255,255,255,0.1);
+    --shadow:       0 1px 3px rgba(0,0,0,0.3);
+    --shadow-lg:    0 4px 12px rgba(0,0,0,0.4);
+    --accent:       #9b5de5;
+    --accent-pink:  #ff006e;
+    --accent-light: rgba(155,93,229,0.1);
+    --text:         #ffffff;
+    --text-secondary: #e0e0e0;
+    --muted:        #8b8b8b;
+    --font-display: 'Bricolage Grotesque', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-body:    'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 body {
@@ -25,32 +30,10 @@ body {
     overflow-x: hidden;
 }
 
-/* BACKGROUND ORBS - makes glassmorphism visible! */
+/* Subtle gradient background - no heavy orbs */
 body::before,
 body::after {
-    content: '';
-    position: fixed;
-    border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.5;
-    z-index: 0;
-    pointer-events: none;
-}
-
-body::before {
-    width: 500px;
-    height: 500px;
-    background: #c4b5fd;
-    top: -150px;
-    left: -100px;
-}
-
-body::after {
-    width: 400px;
-    height: 400px;
-    background: #fca5a5;
-    bottom: -100px;
-    right: -100px;
+    display: none;
 }
 
 .orb {
