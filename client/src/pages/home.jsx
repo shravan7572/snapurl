@@ -73,7 +73,7 @@ export default function Home() {
     }
 
     function handleCopy(shorturl) {
-        navigator.clipboard.writeText(`${shorturl}`)
+        navigator.clipboard.writeText(`${BASE_URL}/${shorturl}`)
         setCopied(shorturl)
         setTimeout(() => setCopied(null), 2000)
     }
