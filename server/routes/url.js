@@ -32,7 +32,7 @@ urlroutes.post("/shorten",user_auth,async (req,res)=>{
         if(existingornot){
           return res.json({
             message:"You already shortened this URL!",
-            shorturl:`${getBaseUrl(req)}/${existingornot.shorturl}`
+            shorturl:existingornot.shorturl
           })
         }
 
@@ -63,7 +63,7 @@ urlroutes.post("/shorten",user_auth,async (req,res)=>{
 
       res.json({
          originalurl:originalurl,
-        shorturl:{shortenurl},
+        shorturl:shortenurl,
         qrCode,
         message:aliasmessage,
       })
