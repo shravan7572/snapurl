@@ -168,12 +168,10 @@
     border-radius: var(--radius-lg);
     background: var(--surface);
     box-shadow: var(--shadow-sm);
-    transition: border-color var(--duration) var(--ease), transform var(--duration) var(--ease);
-}
-
-.bento-card:hover {
-    border-color: var(--border-strong);
-    transform: translateY(-2px);
+    transition: border-color var(--duration) var(--ease), 
+                transform var(--duration) var(--ease), 
+                box-shadow var(--duration) var(--ease),
+                background var(--duration) var(--ease);
 }
 
 .bento-card--large { grid-column: span 2; }
@@ -293,10 +291,7 @@
     transition: border-color var(--duration) var(--ease), transform var(--duration) var(--ease);
 }
 
-.use-case-card:hover {
-    border-color: var(--border-strong);
-    transform: translateY(-2px);
-}
+/* use-case hover is handled inside the @media (hover: hover) block at the end of the file */
 
 .use-case-card h3 {
     font-size: 15px;
@@ -324,6 +319,10 @@
     border-radius: var(--radius-lg);
     background: var(--surface);
     box-shadow: var(--shadow-sm);
+    transition: border-color var(--duration) var(--ease), 
+                transform var(--duration) var(--ease), 
+                box-shadow var(--duration) var(--ease),
+                background var(--duration) var(--ease);
 }
 
 .step-num {
@@ -339,6 +338,10 @@
     color: var(--text-secondary);
     background: var(--surface-raised);
     margin-bottom: var(--space-4);
+    transition: transform var(--duration) var(--ease), 
+                background var(--duration) var(--ease), 
+                border-color var(--duration) var(--ease), 
+                color var(--duration) var(--ease);
 }
 
 .step-card h3 {
@@ -371,6 +374,10 @@
     font-size: 13px;
     font-weight: 500;
     color: var(--text-secondary);
+    transition: border-color var(--duration) var(--ease), 
+                transform var(--duration) var(--ease), 
+                box-shadow var(--duration) var(--ease),
+                background var(--duration) var(--ease);
 }
 
 .included-check {
@@ -385,6 +392,10 @@
     font-size: 11px;
     flex-shrink: 0;
     color: var(--text);
+    transition: background var(--duration) var(--ease), 
+                color var(--duration) var(--ease), 
+                border-color var(--duration) var(--ease),
+                transform var(--duration) var(--ease);
 }
 
 /* Redesigned CTA section */

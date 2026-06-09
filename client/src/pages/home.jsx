@@ -73,7 +73,7 @@ export default function Home() {
     }
 
     function handleCopy(shorturl) {
-        navigator.clipboard.writeText(`${BASE_URL}/${shorturl}`)
+        navigator.clipboard.writeText(`${shorturl}`)
         setCopied(shorturl)
         setTimeout(() => setCopied(null), 2000)
     }
@@ -147,7 +147,7 @@ export default function Home() {
                                 {loading ? <><span className="spinner" /> Creating link…</> : "Create short link"}
                             </button>
                         </form>
-                    </section>
+                   </section>
 
                     {result && (
                         <section className="result-card card card-raised animate-in">
@@ -159,7 +159,7 @@ export default function Home() {
                                 <span className="badge"><span className="badge-dot" /> Active</span>
                             </div>
                             <div className="result-url-box">
-                                <code>{BASE_URL}/{result.shorturl}</code>
+                                <code>  {result.shorturl}</code>
                                 <button type="button" className="btn btn-secondary btn-sm" onClick={() => handleCopy(result.shorturl)}>
                                     {copied === result.shorturl ? "Copied" : "Copy"}
                                 </button>

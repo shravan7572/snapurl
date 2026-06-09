@@ -40,6 +40,6 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected "))
   .catch((err) => console.log("MongoDB Error ", err));
 
-app.listen(5001,()=>{
+app.listen(5001, "0.0.0.0",()=>{
     console.log("You're server is running on http://localhost:5001/")
 })

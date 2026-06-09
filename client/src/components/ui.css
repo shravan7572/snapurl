@@ -28,9 +28,7 @@
     color: var(--accent-fg);
 }
 
-.btn-primary:hover:not(:disabled) {
-    opacity: 0.88;
-}
+/* btn-primary hover handled in the @media block below */
 
 .btn-secondary {
     background: var(--surface-raised);
@@ -38,11 +36,7 @@
     color: var(--text-secondary);
 }
 
-.btn-secondary:hover:not(:disabled) {
-    background: var(--surface-hover);
-    border-color: var(--border-strong);
-    color: var(--text);
-}
+/* btn-secondary hover handled in the @media block below */
 
 .btn-ghost {
     background: transparent;
@@ -50,15 +44,9 @@
     color: var(--text-secondary);
 }
 
-.btn-ghost:hover:not(:disabled) {
-    background: var(--surface-raised);
-    color: var(--text);
-}
+/* btn-ghost hover handled in the @media block below */
 
-.btn-danger:hover:not(:disabled) {
-    color: var(--text);
-    border-color: var(--border-strong);
-}
+/* btn-danger hover handled in the @media block below */
 
 .btn-sm {
     padding: 6px 10px;
@@ -110,9 +98,7 @@
 
 .input::placeholder { color: var(--muted); }
 
-.input:hover:not(:disabled) {
-    border-color: var(--border-strong);
-}
+/* input hover handled in the @media block below */
 
 .input:focus {
     border-color: var(--border-strong);
@@ -186,4 +172,59 @@
     border-top-color: var(--text);
     border-radius: 50%;
     animation: spin 0.7s linear infinite;
+}
+
+/* Responsive enhancements: hover guards and touch targets */
+@media (hover: hover) {
+    .btn-primary:hover:not(:disabled) {
+        opacity: 0.88;
+    }
+    .btn-secondary:hover:not(:disabled) {
+        background: var(--surface-hover);
+        border-color: var(--border-strong);
+        color: var(--text);
+    }
+    .btn-ghost:hover:not(:disabled) {
+        background: var(--surface-raised);
+        color: var(--text);
+    }
+    .btn-danger:hover:not(:disabled) {
+        color: var(--text);
+        border-color: var(--border-strong);
+    }
+    .input:hover:not(:disabled) {
+        border-color: var(--border-strong);
+    }
+}
+
+/* Touch-friendly target expansions on mobile */
+@media (max-width: 640px) {
+    .btn, 
+    .filter-tab, 
+    .modal-close, 
+    .theme-toggle,
+    .app-nav-link,
+    .landing-nav button,
+    .landing-footer-links a,
+    .landing-footer-links button {
+        position: relative;
+    }
+    .btn::after, 
+    .filter-tab::after, 
+    .modal-close::after, 
+    .theme-toggle::after,
+    .app-nav-link::after,
+    .landing-nav button::after,
+    .landing-footer-links a::after,
+    .landing-footer-links button::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        min-width: 44px;
+        min-height: 44px;
+        width: 100%;
+        height: 100%;
+    }
 }
