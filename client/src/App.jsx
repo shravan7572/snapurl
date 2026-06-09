@@ -3,6 +3,7 @@ import Home from "./pages/home"
 import Dashboard from "./pages/dashboard"
 import Landing from "./pages/landing"
 import OAuthSuccess from "./pages/OAuthSuccess"
+import { Analytics } from "@vercel/analytics/react"
 
 function App() {
     return (
@@ -15,6 +16,7 @@ function App() {
                 <Route path="/signin" element={<Navigate to="/" replace />} />
                 <Route path="/signup" element={<Navigate to="/" replace />} />
             </Routes>
+            <Analytics />
         </BrowserRouter>
     )
 }
