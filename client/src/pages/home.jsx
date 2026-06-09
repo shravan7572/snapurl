@@ -159,7 +159,7 @@ export default function Home() {
                                 <span className="badge"><span className="badge-dot" /> Active</span>
                             </div>
                           <div className="result-url-box">
-                                <code>{result.shorturl}</code>
+                            <code>{BASE_URL}/{result.shorturl}</code>
                                 <button type="button" className="btn btn-secondary btn-sm" onClick={() => handleCopy(result.shorturl)}>
                                     {copied === result.shorturl ? "Copied" : "Copy"}
                                 </button>
