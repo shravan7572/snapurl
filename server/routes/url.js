@@ -11,6 +11,14 @@ const QRCode=require("qrcode");
 const urlroutes=express.Router();
 
 
+const getBaseUrl = (req) => {
+  const host = req.get("host");
+  if (host && !host.includes("localhost") && !host.includes("127.0.0.1")) {
+    return `${req.protocol}://${host}`;
+  }
+  return process.env.BASE_URL || `${req.protocol}://${host}`;
+};
+
 urlroutes.post("/shorten",user_auth,async (req,res)=>{
     const originalurl=req.body.originalurl;
     const aliasurl=req.body.aliasurl;
@@ -24,7 +32,7 @@ urlroutes.post("/shorten",user_auth,async (req,res)=>{
         if(existingornot){
           return res.json({
             message:"You already shortened this URL!",
-            shorturl:`${process.env.BASE_URL}/${existingornot.shorturl}`
+            shorturl:`${getBaseUrl(req)}/${existingornot.shorturl}`
           })
         }
 
@@ -42,13 +50,12 @@ urlroutes.post("/shorten",user_auth,async (req,res)=>{
     }else{
       shortenurl=nanoid(10);
     }
-    const qrCode=await QRCode.toDataURL(`${process.env.BASE_URL}/${shortenurl}`)
+    const qrCode=await QRCode.toDataURL(`${getBaseUrl(req)}/${shortenurl}`)
 
     try{
       await Userdatabasemodel.create({
         originalurl:originalurl,
         shorturl:shortenurl,
-        userId:req.userId,
         qrCode
       })
 
@@ -56,7 +63,7 @@ urlroutes.post("/shorten",user_auth,async (req,res)=>{
 
       res.json({
          originalurl:originalurl,
-        shorturl:`${process.env.BASE_URL}/${shortenurl}`,
+        shorturl:{shortenurl},
         qrCode,
         message:aliasmessage,
       })
