@@ -56,6 +56,7 @@ urlroutes.post("/shorten",user_auth,async (req,res)=>{
       await Userdatabasemodel.create({
         originalurl:originalurl,
         shorturl:shortenurl,
+        userId: req.userId,
         qrCode
       })
 
