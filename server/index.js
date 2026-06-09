@@ -16,8 +16,10 @@ app.use(morgan("dev"))
 app.use(express.json())
 app.use(passport.initialize())
 
+
 const urlroutes=require("./routes/url");
 const loginroute=require("./routes/userlogin")
+
 
 app.use("/api",urlroutes)
 app.use("/", urlroutes) 

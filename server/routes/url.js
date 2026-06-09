@@ -10,6 +10,7 @@ const QRCode=require("qrcode");
 
 const urlroutes=express.Router();
 
+
 urlroutes.post("/shorten",user_auth,async (req,res)=>{
     const originalurl=req.body.originalurl;
     const aliasurl=req.body.aliasurl;
