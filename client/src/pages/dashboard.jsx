@@ -82,7 +82,7 @@ export default function Dashboard() {
 
     async function fetchUrls() {
         try {
-            const response = await axios.get("http://localhost:5001/api/urls", { headers: { token } })
+            const response = await axios.get(`${BASE_URL}/api/urls`, { headers: { token } })
             setUrls(response.data.getallurls)
         } catch (e) {
             console.error(e)
@@ -114,7 +114,7 @@ export default function Dashboard() {
 
     async function handleToggle(id) {
         try {
-            await axios.patch(`http://localhost:5001/api/${id}/toggle`, {}, { headers: { token } })
+            await axios.patch(`${BASE_URL}/api/${id}/toggle`, {}, { headers: { token } })
             fetchUrls()
         } catch (e) {
             console.error(e)
@@ -123,7 +123,7 @@ export default function Dashboard() {
 
     async function handleDelete(id) {
         try {
-            await axios.delete(`http://localhost:5001/api/urls/${id}`, { headers: { token } })
+            await axios.delete(`${BASE_URL}/api/urls/${id}`, { headers: { token } })
             if (showAnalytics === id) setShowAnalytics(null)
             fetchUrls()
         } catch (e) {
@@ -137,7 +137,7 @@ export default function Dashboard() {
             return
         }
         try {
-            const response = await axios.get(`http://localhost:5001/api/urls/${id}/analytics`, { headers: { token } })
+            const response = await axios.get(`${BASE_URL}/api/urls/${id}/analytics`, { headers: { token } })
             setAnalyticsData((prev) => ({ ...prev, [id]: response.data.analytics }))
             setShowAnalytics(id)
         } catch (e) {
