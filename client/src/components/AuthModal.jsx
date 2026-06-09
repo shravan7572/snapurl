@@ -19,7 +19,7 @@ export default function AuthModal({ mode: initialMode, onClose }) {
         setLoading(true)
         setError("")
         try {
-            const res = await axios.post(`${import.meta.env.VITE_API_URL}/user/sign-in`, { email, password })
+            const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/user/sign-in`, { email, password })
             localStorage.setItem("token", res.data.token)
             onClose()
             navigate("/app")
@@ -35,7 +35,7 @@ export default function AuthModal({ mode: initialMode, onClose }) {
         setLoading(true)
         setError("")
         try {
-            await axios.post(`${import.meta.env.VITE_API_URL}/user/sign-up`, { firstname, lastname, email, password })
+            await axios.post(`${import.meta.env.VITE_BASE_URL}/user/sign-up`, { firstname, lastname, email, password })
             setMode("login")
             setError("")
         } catch (err) {
@@ -106,7 +106,7 @@ export default function AuthModal({ mode: initialMode, onClose }) {
                     <button
                         type="button"
                         className="btn btn-secondary auth-google"
-                        onClick={() => { window.location.href = `${import.meta.env.VITE_API_URL}/auth/google` }}
+                        onClick={() => { window.location.href = `${import.meta.env.VITE_BASE_URL}/auth/google` }}
                     >
                         <img src="https://www.google.com/favicon.ico" width="16" height="16" alt="" />
                         Continue with Google

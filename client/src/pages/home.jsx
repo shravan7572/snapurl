@@ -31,7 +31,7 @@ export default function Home() {
 
     async function fetchLinks() {
         try {
-            const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/urls`, {
+            const res = await axios.get(`${BASE_URL}/api/urls`, {
                 headers: { token: localStorage.getItem("token") },
             })
             setLinks(res.data.getallurls || [])
@@ -56,7 +56,7 @@ export default function Home() {
 
         try {
             const response = await axios.post(
-                `${import.meta.env.VITE_API_URL}/api/shorten`,
+                `${BASE_URL}/api/shorten`,
                 { originalurl: originalUrl, aliasurl: aliasValue },
                 { headers: { token: localStorage.getItem("token") } }
             )
