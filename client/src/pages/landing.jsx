@@ -249,20 +249,20 @@ export default function Landing() {
             <section className="landing-cta">
                 <div className="landing-cta-glow"></div>
                 <div className="landing-cta-inner animate-in">
-                    <span className="cta-badge">⚡️ Get Started Instantly</span>
+                    <span className="cta-badge"> Get Started Instantly</span>
                     <h2>Start shortening links today</h2>
                     <p className="cta-desc">Free account. Full analytics. No credit card required.</p>
                     <div className="cta-features">
                         <div className="cta-feature-item">
-                            <span className="cta-feature-icon">⚡️</span>
+                            <span className="cta-feature-icon"></span>
                             <span>Setup in 30 seconds</span>
                         </div>
                         <div className="cta-feature-item">
-                            <span className="cta-feature-icon">📊</span>
+                            <span className="cta-feature-icon"></span>
                             <span>Real-time analytics</span>
                         </div>
                         <div className="cta-feature-item">
-                            <span className="cta-feature-icon">🎨</span>
+                            <span className="cta-feature-icon"></span>
                             <span>Custom aliases</span>
                         </div>
                     </div>
