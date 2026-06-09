@@ -10,14 +10,14 @@ oauthroute.get("/google",
 )
 
 oauthroute.get("/google/callback",
-    passport.authenticate("google", { session: false, failureRedirect: "http://localhost:5173/?error=oauth_failed" }),
+    passport.authenticate("google", { session: false, failureRedirect: "https://snapurlapp.vercel.app/?error=oauth_failed" }),
     (req, res) => {
         const token = jwt.sign(
             { id: req.user._id },
             process.env.JWT_SECRET,
             { expiresIn: "7d" }
         )
-       res.redirect(`http://localhost:5173/oauth-success?token=${token}`)   
+       res.redirect(`https://snapurlapp.vercel.app/oauth-success?token=${token}`)   
     }
 )
 
