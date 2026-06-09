@@ -1,316 +1,294 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import axios from "axios"
+import AuthModal from "../components/AuthModal"
+import ProductPreview from "../components/ProductPreview"
+import ThemeToggle from "../components/ThemeToggle"
+import LandingStats from "../components/landing/LandingStats"
+import AnalyticsPreview from "../components/landing/AnalyticsPreview"
 import "./landing.css"
 
-function FaqItem({ q, a }) {
-    const [open, setOpen] = useState(false)
-    return (
-        <div className={`faq-item ${open ? "faq-open" : ""}`} onClick={() => setOpen(!open)}>
-            <div className="faq-question">
-                <span>{q}</span>
-                <span className="faq-chevron">{open ? "−" : "+"}</span>
-            </div>
-            {open && <div className="faq-answer">{a}</div>}
-        </div>
-    )
-}
+const BENTO = [
+    {
+        size: "large",
+        tag: "Core",
+        title: "Instant URL shortening",
+        desc: "Paste any long URL and get a clean short link in seconds. Supports HTTP, HTTPS, and deep links.",
+        points: ["Sub-second generation", "Automatic QR code", "Copy with one click"],
+    },
+    {
+        size: "small",
+        tag: "Branding",
+        title: "Custom aliases",
+        desc: "Choose readable paths like /launch or /docs instead of random strings.",
+    },
+    {
+        size: "small",
+        tag: "Control",
+        title: "Pause anytime",
+        desc: "Disable links without deleting them. Paused links return 404 until re-enabled.",
+    },
+    {
+        size: "medium",
+        tag: "Insights",
+        title: "Per-click analytics",
+        desc: "Every click records browser, operating system, and device type so you know how links perform.",
+        points: ["Browser breakdown", "Device & OS data", "Click history"],
+    },
+    {
+        size: "medium",
+        tag: "Export",
+        title: "QR codes included",
+        desc: "Every short link ships with a downloadable PNG — ready for print, packaging, or slides.",
+        points: ["High-res PNG", "Points to short URL", "Analytics still track"],
+    },
+    {
+        size: "small",
+        tag: "Security",
+        title: "Your links only",
+        desc: "JWT authentication keeps your workspace private. Google sign-in supported.",
+    },
+]
 
-function Landing() {
-    const [showModal,  setShowModal]  = useState(null)
-    const [firstname,  setFirstname]  = useState("")
-    const [lastname,   setLastname]   = useState("")
-    const [email,      setEmail]      = useState("")
-    const [password,   setPassword]   = useState("")
-    const [error,      setError]      = useState("")
+const USE_CASES = [
+    {
+        title: "Product launches",
+        desc: "Share a memorable short link across ads, email, and social. Swap the destination without changing the URL.",
+    },
+    {
+        title: "Developer portfolios",
+        desc: "Use a clean alias on your resume and GitHub. Track which sources drive the most visits.",
+    },
+    {
+        title: "Event registration",
+        desc: "Print QR codes on posters. Monitor mobile vs desktop signups in real time.",
+    },
+    {
+        title: "Campaign tracking",
+        desc: "Create separate aliases per channel and compare click performance side by side.",
+    },
+]
+
+const INCLUDED = [
+    "Unlimited short links",
+    "Unlimited clicks",
+    "Custom aliases",
+    "QR code downloads",
+    "Click analytics",
+    "Enable / disable links",
+    "Google sign-in",
+    "No credit card required",
+]
+
+
+export default function Landing() {
+    const [authMode, setAuthMode] = useState(null)
     const navigate = useNavigate()
 
-    async function handleLogin() {
-        try {
-            const res = await axios.post("http://localhost:5001/user/sign-in", { email, password })
-            localStorage.setItem("token", res.data.token)
-            navigate("/app")
-        } catch(e) {
-            setError(e.response?.data?.message || "Login failed!")
-        }
-    }
-  
-
-    async function handleSignup() {
-        try {
-            await axios.post("http://localhost:5001/user/sign-up", { firstname, lastname, email, password })
-            setError("")
-            setShowModal("login")
-        } catch(e) {
-            setError(e.response?.data?.message || "Signup failed!")
-        }
-    }
-
-    const features = [
-        { icon: "__", title: "Instant Shortening", desc: "Turn any long URL into a clean short link in seconds." },
-        { icon: "__", title: "Custom Aliases",     desc: "Choose your own short code like /my-portfolio." },
-        { icon: "__", title: "Click Analytics",    desc: "Track browser, device, and OS for every click." },
-        { icon: "__", title: "QR Code Generator",  desc: "Every short link gets a downloadable QR code." },
-        { icon: "__", title: "Enable / Disable",   desc: "Pause any link without deleting it." },
-        { icon: "__", title: "JWT Auth",           desc: "Your links belong to you and only you." }
-    ]
+    useEffect(() => {
+        if (localStorage.getItem("token")) navigate("/app", { replace: true })
+    }, [navigate])
 
     function scrollTo(id) {
-        const el = document.getElementById(id)
-        if (!el) return
-        const navHeight = document.querySelector(".landing-nav")?.offsetHeight || 80
-        const top = el.getBoundingClientRect().top + window.scrollY - navHeight - 16
-        window.scrollTo({ top, behavior: "smooth" })
+        document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" })
     }
 
     return (
         <div className="landing">
-            <div className="orb orb-1"></div>
-            <div className="orb orb-2"></div>
-            <div className="orb orb-3"></div>
-
-            {/* NAVBAR */}
-            <nav className="landing-nav">
-                <div className="nav-logo" onClick={() => navigate("/")}>
-                    Snap<span>URL</span>
-                </div>
-                <div className="nav-center">
-                    <button className="nav-link" onClick={() => scrollTo("features")}>Features</button>
-                    <button className="nav-link" onClick={() => scrollTo("how-it-works")}>How it works</button>
-                    <button className="nav-link" onClick={() => scrollTo("faq")}>FAQ</button>
-                </div>
-                <div className="nav-actions">
-                    <button className="btn-ghost" onClick={() => setShowModal("login")}>Login</button>
-                    <button className="btn-solid" onClick={() => setShowModal("signup")}>Get Started Free</button>
-                </div>
-            </nav>
-
-            {/* HERO - 2 column */}
-            <section className="hero">
-                <div className="hero-left">
-                    <div className="hero-badge">✦ Free forever — no credit card needed</div>
-                    <h1>The smarter<br />way to <span>share links.</span></h1>
-                    <p>Powerful link management with click analytics, custom aliases, and QR codes. Everything bit.ly charges for — completely free.</p>
-                    <div className="hero-actions">
-                        <button className="btn-hero" onClick={() => setShowModal("signup")}>
-                            Start for free →
-                        </button>
-                        <button className="btn-hero-ghost" onClick={() => setShowModal("login")}>
-                            I have an account
-                        </button>
-                    </div>
-                    <div className="social-proof">
-                        <div className="avatars">
-                            <div className="avatar" style={{background:"#fca5a5"}}>S</div>
-                            <div className="avatar" style={{background:"#93c5fd"}}>R</div>
-                            <div className="avatar" style={{background:"#86efac"}}>A</div>
-                            <div className="avatar" style={{background:"#c4b5fd"}}>M</div>
-                        </div>
-                        <span>Join developers already using SnapURL</span>
+            <header className="landing-header">
+                <div className="landing-header-inner">
+                    <button type="button" className="landing-brand" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+                        Snap<span>URL</span>
+                    </button>
+                    <nav className="landing-nav" aria-label="Sections">
+                        <button type="button" onClick={() => scrollTo("features")}>Features</button>
+                        <button type="button" onClick={() => scrollTo("analytics")}>Analytics</button>
+                        <button type="button" onClick={() => scrollTo("use-cases")}>Use cases</button>
+                    </nav>
+                    <div className="landing-header-actions">
+                        <ThemeToggle />
+                        <button type="button" className="btn btn-ghost btn-sm" onClick={() => setAuthMode("login")}>Log in</button>
+                        <button type="button" className="btn btn-primary btn-sm" onClick={() => setAuthMode("signup")}>Get started</button>
                     </div>
                 </div>
+            </header>
 
-                <div className="hero-right">
-                    {/* Floating mock cards */}
-                    <div className="mock-card mock-card-main">
-                        <div className="mock-label">YOUR SHORT LINK</div>
-                        <div className="mock-url">snap.url/<span>my-portfolio</span></div>
-                        <div className="mock-divider"></div>
-                        <div className="mock-stats">
-                            <div className="mock-stat">
-                                <span className="stat-val">247</span>
-                                <span className="stat-lbl">Total clicks</span>
-                            </div>
-                            <div className="mock-stat">
-                                <span className="stat-val">14</span>
-                                <span className="stat-lbl">Today</span>
-                            </div>
-                            <div className="mock-stat">
-                                <span className="stat-val">89%</span>
-                                <span className="stat-lbl">Mobile</span>
-                            </div>
+            <section className="landing-hero">
+                <div className="landing-hero-inner">
+                    <div className="landing-hero-copy animate-in">
+                        <p className="landing-eyebrow">Link management for teams</p>
+                        <h1>Short URLs with analytics built in.</h1>
+                        <p className="landing-lead">
+                            Create branded short links, track every click, and manage everything from a single dashboard.
+                        </p>
+                        <div className="landing-hero-cta">
+                            <button type="button" className="btn btn-primary btn-lg" onClick={() => setAuthMode("signup")}>
+                                Create free account
+                            </button>
+                            <button type="button" className="btn btn-secondary btn-lg" onClick={() => setAuthMode("login")}>
+                                Log in
+                            </button>
                         </div>
                     </div>
-
-                    <div className="mock-card mock-card-qr">
-                        <div className="mock-qr">
-                            <div className="qr-grid">
-                                {Array(16).fill(0).map((_,i) => (
-                                    <div key={i} className={`qr-cell ${Math.random() > 0.5 ? "filled" : ""}`}></div>
-                                ))}
-                            </div>
-                        </div>
-                        <div>
-                            <div className="mock-label">QR CODE</div>
-                            <div style={{fontSize:"13px", color:"var(--muted)", marginTop:"4px"}}>Ready to download</div>
-                        </div>
-                    </div>
-
-                    <div className="mock-card mock-card-analytics">
-                        <div className="mock-label">ANALYTICS</div>
-                        <div className="mini-bars">
-                            {[40,70,55,90,65,80,100,75,85,95].map((h,i) => (
-                                <div key={i} className="mini-bar" style={{height:`${h}%`}}></div>
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className="mock-card mock-card-badge">
-                        <div className="badge-icon">|</div>
-                        <div>
-                            <div style={{fontWeight:"600", fontSize:"14px"}}>Custom Alias</div>
-                            <div style={{fontSize:"12px", color:"var(--muted)"}}>snap.url/your-brand</div>
-                        </div>
+                    <div className="landing-hero-visual animate-in stagger-2">
+                        <ProductPreview />
                     </div>
                 </div>
             </section>
 
-            {/* FEATURES */}
-            <section className="features" id="features">
-                <div className="section-header">
-                    <p className="section-label">Features</p>
-                    <h2 className="section-title">More than just a URL shortener.</h2>
+            <LandingStats />
+
+            <section className="landing-section" id="features">
+                <div className="landing-section-inner">
+                    <div className="landing-section-head animate-in">
+                        <p className="section-eyebrow">Features</p>
+                        <h2>Built for a practical workflow</h2>
+                        <p>Everything you need to shorten, share, and measure — without feature bloat.</p>
+                    </div>
+                    <div className="bento-grid">
+                        {BENTO.map((item, i) => (
+                            <article key={item.title} className={`bento-card bento-card--${item.size} animate-in stagger-${(i % 5) + 1}`}>
+                                <span className="bento-tag">{item.tag}</span>
+                                <h3>{item.title}</h3>
+                                <p>{item.desc}</p>
+                                {item.points && (
+                                    <ul className="bento-points">
+                                        {item.points.map((pt) => (
+                                            <li key={pt}>{pt}</li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </article>
+                        ))}
+                    </div>
                 </div>
-                <div className="features-grid">
-                    {features.map((f, i) => (
-                        <div className="feature-card" key={i}>
-                            <span className="feature-icon">{f.icon}</span>
-                            <h3>{f.title}</h3>
-                            <p>{f.desc}</p>
+            </section>
+
+            <section className="landing-section landing-section--split" id="analytics">
+                <div className="landing-section-inner split-layout">
+                    <div className="split-copy animate-in">
+                        <p className="section-eyebrow">Analytics</p>
+                        <h2>Know exactly who clicks your links</h2>
+                        <p>
+                            Every visit is logged with browser, device, and operating system data.
+                            See totals, daily trends, and a full visit history per link.
+                        </p>
+                        <ul className="split-checklist">
+                            <li>Total and daily click counts</li>
+                            <li>Browser, OS, and device per visit</li>
+                            <li>Expandable stats on each link card</li>
+                            <li>Works through QR scans too</li>
+                        </ul>
+                    </div>
+                    <div className="split-visual animate-in stagger-2">
+                        <AnalyticsPreview />
+                    </div>
+                </div>
+            </section>
+
+            <section className="landing-section landing-section--muted" id="use-cases">
+                <div className="landing-section-inner">
+                    <div className="landing-section-head animate-in">
+                        <p className="section-eyebrow">Use cases</p>
+                        <h2>Works across teams and channels</h2>
+                        <p>From solo developers to marketing campaigns — one tool for every link.</p>
+                    </div>
+                    <div className="use-case-grid">
+                        {USE_CASES.map((uc, i) => (
+                            <div key={uc.title} className={`use-case-card animate-in stagger-${i + 1}`}>
+                                <h3>{uc.title}</h3>
+                                <p>{uc.desc}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            <section className="landing-section">
+                <div className="landing-section-inner">
+                    <div className="landing-section-head animate-in">
+                        <p className="section-eyebrow">How it works</p>
+                        <h2>Three steps. That's it.</h2>
+                    </div>
+                    <ol className="steps-list steps-list--cards">
+                        <li className="step-card animate-in stagger-1">
+                            <span className="step-num">1</span>
+                            <h3>Create your account</h3>
+                            <p>Sign up with email or Google. No credit card, no verification delays.</p>
+                        </li>
+                        <li className="step-card animate-in stagger-2">
+                            <span className="step-num">2</span>
+                            <h3>Paste your URL</h3>
+                            <p>Drop in any destination URL. Add a custom alias if you want a readable path.</p>
+                        </li>
+                        <li className="step-card animate-in stagger-3">
+                            <span className="step-num">3</span>
+                            <h3>Share and track</h3>
+                            <p>Copy the short link or download the QR code. Monitor clicks from your dashboard.</p>
+                        </li>
+                    </ol>
+                </div>
+            </section>
+
+            <section className="landing-section landing-section--muted">
+                <div className="landing-section-inner">
+                    <div className="landing-section-head animate-in">
+                        <p className="section-eyebrow">Included</p>
+                        <h2>Everything in one free plan</h2>
+                    </div>
+                    <div className="included-grid">
+                        {INCLUDED.map((item, i) => (
+                            <div key={item} className={`included-box animate-in stagger-${(i % 5) + 1}`}>
+                                <span className="included-check">✓</span>
+                                <span>{item}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            <section className="landing-cta">
+                <div className="landing-cta-glow"></div>
+                <div className="landing-cta-inner animate-in">
+                    <span className="cta-badge">⚡️ Get Started Instantly</span>
+                    <h2>Start shortening links today</h2>
+                    <p className="cta-desc">Free account. Full analytics. No credit card required.</p>
+                    <div className="cta-features">
+                        <div className="cta-feature-item">
+                            <span className="cta-feature-icon">⚡️</span>
+                            <span>Setup in 30 seconds</span>
                         </div>
-                    ))}
-                </div>
-            </section>
-
-            {/* HOW IT WORKS */}
-            <section className="how-it-works"id="how-it-works">
-                <div className="section-header">
-                    <p className="section-label">How it works</p>
-                    <h2 className="section-title">Three steps. That's it.</h2>
-                </div>
-                <div className="steps">
-                    <div className="step">
-                        <span className="step-number">01</span>
-                        <h3>Create your account</h3>
-                        <p>Sign up in seconds. No credit card, no verification. Just email and password.</p>
+                        <div className="cta-feature-item">
+                            <span className="cta-feature-icon">📊</span>
+                            <span>Real-time analytics</span>
+                        </div>
+                        <div className="cta-feature-item">
+                            <span className="cta-feature-icon">🎨</span>
+                            <span>Custom aliases</span>
+                        </div>
                     </div>
-                    <div className="step">
-                        <span className="step-number">02</span>
-                        <h3>Paste your long URL</h3>
-                        <p>Drop in any URL, add a custom alias if you want, and hit shorten.</p>
-                    </div>
-                    <div className="step">
-                        <span className="step-number">03</span>
-                        <h3>Share and track</h3>
-                        <p>Copy your short link or scan the QR code. Watch analytics in real time.</p>
-                    </div>
-                </div>
-            </section>
-
-            {/* FAQ */}
-            <section className="faq" id="faq">
-                <div className="section-header">
-                    <p className="section-label">FAQ</p>
-                    <h2 className="section-title">Common questions.</h2>
-                </div>
-                <div className="faq-list">
-                    {[
-                        { q: "Is SnapURL really free?", a: "Yes, completely. No credit card, no hidden fees, no premium tier. Everything you see is available to all users." },
-                        { q: "Are there any link or click limits?", a: "No limits on the number of links you can create or the clicks they receive. Shorten as many URLs as you need." },
-                        { q: "Can I use a custom alias for my links?", a: "Absolutely. When shortening a URL, just type your preferred alias — like /my-portfolio — and we'll use it if it's available." },
-                        { q: "What analytics do I get per link?", a: "Each link tracks total clicks, clicks today, and a breakdown by browser, device type, and operating system." },
-                        { q: "Can I disable a link without deleting it?", a: "Yes. Every link has an enable/disable toggle. Disabled links return a 404 until you turn them back on." },
-                        { q: "How does the QR code work?", a: "Every short link automatically gets a QR code you can download. It points to your short URL, so analytics still work through it." },
-                    ].map((item, i) => (
-                        <FaqItem key={i} q={item.q} a={item.a} />
-                    ))}
-                </div>
-            </section>
-
-            {/* CTA */}
-            <section className="cta" id="cta">
-                <div className="cta-inner">
-                    <h2>Ready to <span>own your links?</span></h2>
-                    <p>Join SnapURL and start shortening for free. No hidden fees, ever.</p>
-                    <button className="btn-hero" onClick={() => setShowModal("signup")}>
-                        Get Started Free →
+                    <button type="button" className="btn btn-primary btn-lg btn-cta-main" onClick={() => setAuthMode("signup")}>
+                        Get started for free
+                        <svg className="cta-btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ width: "16px", height: "16px", marginLeft: "8px" }}>
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                            <polyline points="12 5 19 12 12 19" />
+                        </svg>
                     </button>
                 </div>
             </section>
 
-            <footer className="footer">
-                <div className="footer-left">
-                    <div className="footer-logo">Snap<span>URL</span></div>
-                    <p>Powerful link management with analytics,<br/>custom aliases, and QR codes.</p>
-                </div>
-                <div className="footer-links">
-                    <div className="footer-col">
-                        <h4>Product</h4>
-                        <button className="footer-link-btn" onClick={() => scrollTo("features")}>Features</button>
-                        <button className="footer-link-btn" onClick={() => scrollTo("how-it-works")}>How it works</button>
-                        <button className="footer-link-btn" onClick={() => setShowModal("signup")}>Get Started</button>
+            <footer className="landing-footer">
+                <div className="landing-footer-inner">
+                    <span className="landing-brand">Snap<span>URL</span></span>
+                    <div className="landing-footer-links">
+                        <button type="button" onClick={() => scrollTo("features")}>Features</button>
+                        <button type="button" onClick={() => scrollTo("use-cases")}>Use cases</button>
+                        <a href="https://github.com/shravan7572/snapurl" target="_blank" rel="noreferrer">GitHub</a>
                     </div>
-                    <div className="footer-col">
-                        <h4>Resources</h4>
-                        <a href="https://github.com/shravan7572/snapurl" target="_blank">GitHub</a>
-                        <button className="footer-link-btn" onClick={() => scrollTo("faq")}>FAQ</button>
-                    </div>
-                    <div className="footer-col">
-                        <h4>Legal</h4>
-                        <p>© 2026 SnapURL</p>
-                    </div>
+                    <span className="landing-footer-copy">© 2026 SnapURL</span>
                 </div>
             </footer>
 
-            {/* MODAL */}
-            {showModal && (
-                <div className="modal-overlay" onClick={() => { setShowModal(null); setError("") }}>
-                    <div className="modal-box" onClick={(e) => e.stopPropagation()}>
-                        <div className="modal-tabs">
-                            <button className={showModal === "login" ? "tab active" : "tab"}
-                                onClick={() => { setShowModal("login"); setError("") }}>Login</button>
-                            <button className={showModal === "signup" ? "tab active" : "tab"}
-                                onClick={() => { setShowModal("signup"); setError("") }}>Sign Up</button>
-                        </div>
-                        <h2 className="modal-title">
-                            {showModal === "login" ? "Welcome back !" : "Create account"}
-                        </h2>
-                        {error && <p className="modal-error">{error}</p>}
-                        {showModal === "signup" && (
-                            <div className="modal-row">
-                                <input className="modal-input" type="text" placeholder="First Name"
-                                    value={firstname} onChange={(e) => setFirstname(e.target.value)} />
-                                <input className="modal-input" type="text" placeholder="Last Name"
-                                    value={lastname} onChange={(e) => setLastname(e.target.value)} />
-                            </div>
-                        )}
-                        <input className="modal-input" type="email" placeholder="Email"
-                            value={email} onChange={(e) => setEmail(e.target.value)} />
-                        <input className="modal-input" type="password" placeholder="Password"
-                            value={password} onChange={(e) => setPassword(e.target.value)} />
-                        <button className="modal-btn"
-                            onClick={showModal === "login" ? handleLogin : handleSignup}>
-                            {showModal === "login" ? "Login →" : "Create Account →"}
-                            <div className="modal-divider">
-                                <span>or</span>
-                            </div>
-                            <button className="modal-google-btn"
-                                onClick={() => window.location.href = "http://localhost:5001/auth/google"}>
-                                <img src="https://www.google.com/favicon.ico" width="16" height="16" />
-                                Continue with Google
-                            </button>
-                          </button>
-                        <p className="modal-switch">
-                            {showModal === "login" ? "Don't have an account? " : "Already have an account? "}
-                            <span onClick={() => { setShowModal(showModal === "login" ? "signup" : "login"); setError("") }}>
-                                {showModal === "login" ? "Sign up" : "Login"}
-                            </span>
-                        </p>
-                    </div>
-                </div>
-            )}
+            {authMode && <AuthModal mode={authMode} onClose={() => setAuthMode(null)} />}
         </div>
     )
 }
-
-export default Landing

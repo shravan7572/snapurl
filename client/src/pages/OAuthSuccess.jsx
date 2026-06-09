@@ -1,20 +1,25 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import "./oauth.css"
 
 export default function OAuthSuccess() {
-    const navigate = useNavigate();
+    const navigate = useNavigate()
 
     useEffect(() => {
-        const params = new URLSearchParams(window.location.search);
-        const token = params.get("token");
-
+        const params = new URLSearchParams(window.location.search)
+        const token = params.get("token")
         if (token) {
-            localStorage.setItem("token", token);
-            navigate("/dashboard");
+            localStorage.setItem("token", token)
+            navigate("/dashboard", { replace: true })
         } else {
-            navigate("/");
+            navigate("/", { replace: true })
         }
-    }, [navigate]);
+    }, [navigate])
 
-    return <h2>Signing you in...</h2>;
+    return (
+        <div className="oauth-loading">
+            <span className="spinner" />
+            <p>Signing you in…</p>
+        </div>
+    )
 }
