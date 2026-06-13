@@ -215,8 +215,8 @@ export default function Home() {
                                         </div>
                                         <p className="side-link-original" title={link.originalurl}>{link.originalurl}</p>
                                         <div className="side-link-actions">
-                                            <button type="button" className="btn btn-ghost btn-sm" onClick={() => handleCopy(`${BASE_URL}/${link.shorturl}`)}>
-                                                {copied === `${BASE_URL}/${link.shorturl}` ? "Copied" : "Copy"}
+                                            <button type="button" className="btn btn-ghost btn-sm" onClick={() => handleCopy(link.shorturl)}>
+                                                {copied === link.shorturl ? "Copied" : "Copy"}
                                             </button>
                                             {!link.isActive && <span className="badge badge--paused"><span className="badge-dot badge-dot--off" /> Paused</span>}
                                         </div>
@@ -225,7 +225,7 @@ export default function Home() {
                             </ul>
                         )}
                     </section>
-
+                        
                     <section className="quick-actions card animate-in stagger-3">
                         <h2>Quick actions</h2>
                         <div className="quick-actions-grid">
